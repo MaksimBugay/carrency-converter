@@ -1,0 +1,54 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+group = 'zoo.plus.task'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+bootRun {
+    jvmArgs = ["-Djava.security.egd=file:/dev/./urandom"]
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-cache')
+    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+
+    compile group: 'com.google.guava', name: 'guava', version: '22.0'
+
+    compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.6.1'
+
+    compile("io.dropwizard.metrics:metrics-core:3.2.2")
+
+    runtime('com.h2database:h2')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+
+    testCompile('info.cukes:cucumber-java:1.2.5')
+    testCompile('info.cukes:cucumber-junit:1.2.5')
+    testCompile('info.cukes:cucumber-spring:1.2.5')
+
+    testCompile('org.seleniumhq.selenium:selenium-java:3.8.1') {
+        exclude(group: 'com.google.guava', module: 'guava')
+    }
+}

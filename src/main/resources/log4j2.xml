@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" packages="org.graylog2.log4j2">
+    <Appenders>
+
+        <RollingFile name="RollingFile" fileName="/var/log/zooplus/currency-converter.log" filePattern="/var/log/zooplus/currency-converter.log.%d{yyyy-MM-dd}-%i">
+            <PatternLayout>
+                <pattern>%d{ISO8601} %X %5p %c{1}: - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="/var/log/zooplus" >
+                    <IfFileName glob="currency-converter.log.*">
+                        <IfAccumulatedFileCount exceeds="30" />
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="RollingErrorFile" fileName="/var/log/zooplus/currency-converter-error.log" filePattern="/var/log/zooplus/currency-converter-error.log.%d{yyyy-MM-dd}-%i">
+            <PatternLayout>
+                <pattern>%d{ISO8601} %X %5p %c{1}: - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="/var/log/zooplus" >
+                    <IfFileName glob="currency-converter-error.log.*">
+                        <IfAccumulatedFileCount exceeds="30" />
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <!--Left for localhost debug-->
+        <!--<Console name="Stdout" target="SYSTEM_OUT">-->
+        <!--<PatternLayout pattern="%d{ISO8601} %X %5p %c{1}: - %m%n"/>-->
+        <!--</Console>-->
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="error"/> <!-- ignore Cookie rejected warning from apple -->
+        <Logger name="org.springframework.ws.client.MessageTracing" level="error"/>
+        <Logger name="org.springframework.ws.server.MessageTracing" level="error"/>
+        <Root level="info">
+            <!--<AppenderRef ref="Stdout"/>-->
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="RollingErrorFile" level="error"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
+
+
+        <!--logger.org.hibernate=trace-->
+        <!--logger.com.amazonaws=trace-->
+        <!--logger.org.springframework.transaction.interceptor=trace-->
+        <!--logger.org.springframework.orm.hibernate5.HibernateTransactionManager=trace-->
+        <!--logger.org.hibernate.SQL=trace-->
+        <!--logger.org.hibernate.type=trace-->
+
